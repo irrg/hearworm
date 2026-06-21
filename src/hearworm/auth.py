@@ -8,6 +8,7 @@ _AUTH_FILE = _CONFIG_DIR / "auth.json"
 
 
 def login(country: str = "us") -> str:
+    import readline  # noqa: F401 — enables long URL paste on macOS
     import audible
 
     _CONFIG_DIR.mkdir(parents=True, exist_ok=True)

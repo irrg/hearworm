@@ -26,7 +26,7 @@ def list_books(page_size: int = 100) -> list[Book]:
                 params={
                     "num_results": page_size,
                     "page": page,
-                    "response_groups": "contributors,product_attrs",
+                    "response_groups": "contributors,product_attrs,product_desc",
                     "sort_by": "-PurchaseDate",
                 },
             )
