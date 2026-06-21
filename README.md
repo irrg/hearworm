@@ -4,6 +4,10 @@ Download, convert, split, merge, and chapter-mark audiobook files. **ffmpeg is t
 
 Supports mp3, m4b, m4a, aac, flac, ogg, wav, and wma as input or output. Primary use case: downloading Audible books and splitting m4b audiobooks into per-chapter mp3 files.
 
+## Notice
+
+This tool is intended for personal use only — to access audiobooks you have legally purchased and are entitled to download. It is not intended to facilitate piracy or any unauthorized distribution of copyrighted content.
+
 ## License
 
 MIT License — see [LICENSE](LICENSE) for full text.
