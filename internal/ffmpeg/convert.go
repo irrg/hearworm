@@ -59,6 +59,11 @@ func ApplyMeta(input, output, metaFile string) error {
 		"-map_metadata", "1", "-c", "copy", output)
 }
 
+// CopyAudio remuxes input to output copying the audio stream, stripping video/cover art.
+func CopyAudio(input, output string) error {
+	return run("-y", "-i", input, "-c", "copy", "-vn", output)
+}
+
 // ExtractCover pulls attached cover art to a JPEG file.
 func ExtractCover(input, output string) error {
 	return run("-y", "-i", input, "-an", "-vcodec", "copy", output)

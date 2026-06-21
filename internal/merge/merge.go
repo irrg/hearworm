@@ -67,8 +67,16 @@ func Run(opts Options) error {
 		}
 
 		tmp := filepath.Join(tmpDir, fmt.Sprintf("%04d.m4a", i))
-		if err := ffmpeg.ConvertToAAC(input, tmp, ffmpeg.ConvertOpts{Bitrate: coalesce(opts.Tag.Bitrate, "64k")}); err != nil {
-			return fmt.Errorf("convert %q: %w", input, err)
+		if isAAC(probe) {
+			fmt.Printf("[%d/%d] copy  %s\n", i+1, len(inputs), filepath.Base(input))
+			if err := ffmpeg.CopyAudio(input, tmp); err != nil {
+				return fmt.Errorf("copy %q: %w", input, err)
+			}
+		} else {
+			fmt.Printf("[%d/%d] encode %s\n", i+1, len(inputs), filepath.Base(input))
+			if err := ffmpeg.ConvertToAAC(input, tmp, ffmpeg.ConvertOpts{Bitrate: coalesce(opts.Tag.Bitrate, "64k")}); err != nil {
+				return fmt.Errorf("convert %q: %w", input, err)
+			}
 		}
 
 		title := probe.Format.Tags["title"]
@@ -136,6 +144,15 @@ func tagsMap(at tag.AudioTag) map[string]string {
 		}
 	}
 	return m
+}
+
+func isAAC(probe *ffmpeg.ProbeResult) bool {
+	for _, s := range probe.Streams {
+		if s.CodecType == "audio" {
+			return s.CodecName == "aac"
+		}
+	}
+	return false
 }
 
 func coalesce(vals ...string) string {
