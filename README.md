@@ -36,10 +36,10 @@ Combine a directory of audio files into a single `.m4b` with chapters.
 ```bash
 m4b-tool merge /path/to/audio-files/ \
   --output-file output.m4b \
-  --name "Harry Potter and the Chamber of Secrets" \
-  --artist "J.K. Rowling" \
-  --series "Harry Potter" \
-  --series-part "2"
+  --name "The Name of the Wind" \
+  --artist "Patrick Rothfuss" \
+  --series "Kingkiller Chronicle" \
+  --series-part "1"
 ```
 
 One chapter is created per input file, named from the file's `title` tag (or the filename if no tag exists). Files are sorted alphabetically, so prefix them with track numbers (`01-`, `02-`, etc.) for correct order.
@@ -59,7 +59,7 @@ One chapter is created per input file, named from the file's `title` tag (or the
 | `--series-part` | | Series part number |
 | `--audio-bitrate` | `64k` | Output AAC bitrate |
 
-**Series sort order:** When `--series` and `--series-part` are set, `sort_name` is automatically computed as `"{series} {part} - {title}"` (e.g. `Harry Potter 2 - Harry Potter and the Chamber of Secrets`). Players that respect sort tags will order the series correctly regardless of alphabetical title order.
+**Series sort order:** When `--series` and `--series-part` are set, `sort_name` is automatically computed as `"{series} {part} - {title}"` (e.g. `Kingkiller Chronicle 1 - The Name of the Wind`). Players that respect sort tags will order the series correctly regardless of alphabetical title order.
 
 ### split
 
@@ -96,20 +96,3 @@ Omit `--output-file` to overwrite the input in-place.
 | `--silence-min-noise` | `-30` | Noise threshold in dB |
 | `--silence-min-length` | `0.5` | Minimum silence duration in seconds |
 
-## What's not included (v1)
-
-- MusicBrainz chapter name lookup
-- EPUB / Audible JSON / Overdrive metadata sources
-- Parallel batch processing
-- fdkaac / tone support
-
-## Differences from sandreas/m4b-tool
-
-| Feature | m4b-tool (PHP) | m4b-go |
-|---------|---------------|--------|
-| Runtime | PHP 8.2 + Composer | None (static binary) |
-| MP4 tagging | Custom mp4v2 fork | ffmpeg `-metadata` flags |
-| Sort tags | Custom `mp4tags` CLI | ffmpeg `sort_name`, `sort_album` |
-| High-efficiency AAC | fdkaac (optional) | ffmpeg built-in AAC |
-| Tone integration | tone binary (optional) | Not included |
-| MusicBrainz | Supported | Not included (v1) |
