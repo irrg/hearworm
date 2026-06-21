@@ -9,8 +9,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "m4b-tool",
-	Short: "Audiobook m4b manipulation tool",
+	Use:   "hearworm",
+	Short: "Audiobook conversion and manipulation tool",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		for _, bin := range []string{"ffmpeg", "ffprobe"} {
 			if _, err := exec.LookPath(bin); err != nil {

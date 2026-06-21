@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"m4b/internal/ffmpeg"
+	"hearworm/internal/ffmpeg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

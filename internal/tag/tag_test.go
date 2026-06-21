@@ -3,7 +3,7 @@ package tag_test
 import (
 	"testing"
 
-	"m4b/internal/tag"
+	"hearworm/internal/tag"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"m4b/internal/chapter"
-	"m4b/internal/ffmpeg"
-	"m4b/internal/tag"
+	"hearworm/internal/chapter"
+	"hearworm/internal/ffmpeg"
+	"hearworm/internal/tag"
 )
 
 type TagOptions struct {

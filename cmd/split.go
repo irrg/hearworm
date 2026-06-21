@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"m4b/internal/split"
+	"hearworm/internal/split"
 )
 
 var splitCmd = &cobra.Command{

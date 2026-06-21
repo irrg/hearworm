@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"m4b/internal/chapters"
-	"m4b/internal/ffmpeg"
+	"hearworm/internal/chapters"
+	"hearworm/internal/ffmpeg"
 	"github.com/stretchr/testify/assert"
 )
 

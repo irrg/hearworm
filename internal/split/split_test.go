@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"m4b/internal/split"
+	"hearworm/internal/split"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

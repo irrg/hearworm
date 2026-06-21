@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"m4b/internal/chapter"
-	"m4b/internal/ffmpeg"
+	"hearworm/internal/chapter"
+	"hearworm/internal/ffmpeg"
 )
 
 type Options struct {

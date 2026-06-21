@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"m4b/internal/chapter"
+	"hearworm/internal/chapter"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"m4b/internal/ffmpeg"
+	"hearworm/internal/ffmpeg"
 )
 
 type Options struct {

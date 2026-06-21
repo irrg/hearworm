@@ -3,7 +3,7 @@ package ffmpeg_test
 import (
 	"testing"
 
-	"m4b/internal/ffmpeg"
+	"hearworm/internal/ffmpeg"
 	"github.com/stretchr/testify/require"
 )
 

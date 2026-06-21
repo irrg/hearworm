@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"m4b/internal/chapter"
+	"hearworm/internal/chapter"
 )
 
 func WriteMeta(path string, tags map[string]string, chapters chapter.List, totalDuration time.Duration) error {

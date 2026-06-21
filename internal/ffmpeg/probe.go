@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"time"
 
-	"m4b/internal/chapter"
+	"hearworm/internal/chapter"
 )
 
 type ProbeResult struct {

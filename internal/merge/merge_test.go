@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"m4b/internal/merge"
+	"hearworm/internal/merge"
 	"github.com/stretchr/testify/require"
 )
 

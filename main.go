@@ -1,6 +1,6 @@
 package main
 
-import "m4b/cmd"
+import "hearworm/cmd"
 
 func main() {
 	cmd.Execute()
