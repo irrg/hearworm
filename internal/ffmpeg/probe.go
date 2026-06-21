@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os/exec"
 	"time"
+
+	"m4b/internal/chapter"
 )
 
 type ProbeResult struct {
@@ -64,4 +66,21 @@ func ParseSeconds(s string) (time.Duration, error) {
 		return 0, fmt.Errorf("cannot parse %q as seconds: %w", s, err)
 	}
 	return time.Duration(secs * float64(time.Second)), nil
+}
+
+// ChaptersFromProbe converts ffprobe chapter data to a chapter.List.
+// Uses StartTime/EndTime (float second strings) for accuracy across all timebases.
+func ChaptersFromProbe(r *ProbeResult) chapter.List {
+	list := make(chapter.List, len(r.Chapters))
+	for i, c := range r.Chapters {
+		var startSecs, endSecs float64
+		fmt.Sscanf(c.StartTime, "%f", &startSecs)
+		fmt.Sscanf(c.EndTime, "%f", &endSecs)
+		list[i] = chapter.Chapter{
+			Title: c.Tags["title"],
+			Start: time.Duration(startSecs * float64(time.Second)),
+			End:   time.Duration(endSecs * float64(time.Second)),
+		}
+	}
+	return list
 }
