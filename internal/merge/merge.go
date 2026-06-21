@@ -29,6 +29,7 @@ type Options struct {
 	InputDir   string
 	InputFiles []string
 	OutputFile string
+	Format     string // output format: "m4b" (default), "mp3", "m4a", etc.
 	Tag        TagOptions
 }
 
@@ -66,15 +67,16 @@ func Run(opts Options) error {
 			return fmt.Errorf("duration for %q: %w", input, err)
 		}
 
-		tmp := filepath.Join(tmpDir, fmt.Sprintf("%04d.m4a", i))
-		if isAAC(probe) {
-			fmt.Printf("[%d/%d] copy  %s\n", i+1, len(inputs), filepath.Base(input))
+		tmpExt := targetExt(opts.Format)
+		tmp := filepath.Join(tmpDir, fmt.Sprintf("%04d%s", i, tmpExt))
+		if isCompatible(probe, opts.Format) {
+			fmt.Printf("[%d/%d] copy   %s\n", i+1, len(inputs), filepath.Base(input))
 			if err := ffmpeg.CopyAudio(input, tmp); err != nil {
 				return fmt.Errorf("copy %q: %w", input, err)
 			}
 		} else {
 			fmt.Printf("[%d/%d] encode %s\n", i+1, len(inputs), filepath.Base(input))
-			if err := ffmpeg.ConvertToAAC(input, tmp, ffmpeg.ConvertOpts{Bitrate: coalesce(opts.Tag.Bitrate, "64k")}); err != nil {
+			if err := ffmpeg.ConvertAudio(input, tmp, ffmpeg.ConvertOpts{Bitrate: coalesce(opts.Tag.Bitrate, defaultBitrate(opts.Format))}); err != nil {
 				return fmt.Errorf("convert %q: %w", input, err)
 			}
 		}
@@ -146,13 +148,38 @@ func tagsMap(at tag.AudioTag) map[string]string {
 	return m
 }
 
-func isAAC(probe *ffmpeg.ProbeResult) bool {
+// isCompatible returns true if the source audio codec already matches the target format,
+// meaning we can remux with -c copy instead of re-encoding.
+func isCompatible(probe *ffmpeg.ProbeResult, format string) bool {
 	for _, s := range probe.Streams {
 		if s.CodecType == "audio" {
-			return s.CodecName == "aac"
+			switch strings.ToLower(format) {
+			case "mp3":
+				return s.CodecName == "mp3"
+			default: // m4b, m4a, aac
+				return s.CodecName == "aac"
+			}
 		}
 	}
 	return false
+}
+
+func targetExt(format string) string {
+	switch strings.ToLower(format) {
+	case "mp3":
+		return ".mp3"
+	case "m4a":
+		return ".m4a"
+	default:
+		return ".m4a"
+	}
+}
+
+func defaultBitrate(format string) string {
+	if strings.ToLower(format) == "mp3" {
+		return "128k"
+	}
+	return "64k"
 }
 
 func coalesce(vals ...string) string {

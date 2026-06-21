@@ -3,7 +3,9 @@ package ffmpeg
 import (
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -13,8 +15,17 @@ type ConvertOpts struct {
 	Channels   int
 }
 
-func ConvertToAAC(input, output string, opts ConvertOpts) error {
-	args := []string{"-y", "-i", input, "-c:a", "aac"}
+// ConvertAudio transcodes input to output. Codec is inferred from the output file extension:
+// .mp3 → libmp3lame, everything else → aac.
+func ConvertAudio(input, output string, opts ConvertOpts) error {
+	var codec string
+	switch strings.ToLower(filepath.Ext(output)) {
+	case ".mp3":
+		codec = "libmp3lame"
+	default:
+		codec = "aac"
+	}
+	args := []string{"-y", "-i", input, "-c:a", codec}
 	if opts.Bitrate != "" {
 		args = append(args, "-b:a", opts.Bitrate)
 	}
@@ -28,13 +39,19 @@ func ConvertToAAC(input, output string, opts ConvertOpts) error {
 	return run(args...)
 }
 
-// Concat assembles a concat list + optional ffmetadata file into an m4b.
+// ConvertToAAC is a convenience wrapper targeting AAC output.
+func ConvertToAAC(input, output string, opts ConvertOpts) error {
+	return ConvertAudio(input, output, opts)
+}
+
+// Concat assembles a concat list + optional ffmetadata file into a single output file.
+// Output format is inferred from the output file extension.
 func Concat(listFile, output, metaFile string) error {
 	args := []string{"-y", "-f", "concat", "-safe", "0", "-i", listFile}
 	if metaFile != "" {
 		args = append(args, "-i", metaFile, "-map_metadata", "1")
 	}
-	args = append(args, "-c", "copy", "-f", "mp4", output)
+	args = append(args, "-c", "copy", output)
 	return run(args...)
 }
 

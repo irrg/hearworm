@@ -23,6 +23,7 @@ var mergeCmd = &cobra.Command{
 		opts.Tag.Series, _ = f.GetString("series")
 		opts.Tag.SeriesPart, _ = f.GetString("series-part")
 		opts.Tag.Bitrate, _ = f.GetString("audio-bitrate")
+		opts.Format, _ = f.GetString("audio-format")
 		return merge.Run(opts)
 	},
 }
@@ -38,7 +39,8 @@ func init() {
 	f.String("year", "", "publication year")
 	f.String("series", "", "series name (used to compute sort order)")
 	f.String("series-part", "", "series part number")
-	f.String("audio-bitrate", "64k", "output audio bitrate (e.g. 64k, 128k)")
+	f.String("audio-format", "m4b", "output format: m4b, m4a, mp3")
+	f.String("audio-bitrate", "", "output audio bitrate (e.g. 64k, 128k); defaults to 128k for mp3, 64k for aac")
 	mergeCmd.MarkFlagRequired("output-file")
 	rootCmd.AddCommand(mergeCmd)
 }
